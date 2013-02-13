@@ -11,6 +11,7 @@
 * Fixes cases where CFPropertyList could fail to load (@svelix)
 * Uses relative paths for requires (@smtlaissezfaire)
 * Raises an exception if the build fails (@epall)
+* Uploads dsym to Testflight (@mbrandonw)
 
 
 ## 0.7.4.1
