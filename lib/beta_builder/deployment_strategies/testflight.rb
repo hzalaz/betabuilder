@@ -24,7 +24,11 @@ module BetaBuilder
 
         File.delete(@configuration.built_app_dsym_zip_path) if File.exists?(@configuration.built_app_dsym_zip_path)
         Zip::ZipFile.open("#{@configuration.built_app_dsym_zip_path}", Zip::ZipFile::CREATE) do |zipfile|
-          Dir["#{@configuration.built_app_dsym_path}/**/*"].each {|f| zipfile.add(f,f)}
+          Dir["#{@configuration.built_app_dsym_path}/**/*"].each { |f|
+            name = f.sub("#{@configuration.built_app_dsym_path}/", '')
+            path = "#{@configuration.built_app_dsym_path}/#{f}"
+            zipfile.add(name, f) if File.file?f
+          }
         end
 
         payload = {
