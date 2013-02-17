@@ -23,7 +23,8 @@ module BetaBuilder
         :xcode4_archive_mode => false,
         :skip_clean => false,
         :verbose => false,
-        :dry_run => false
+        :dry_run => false,
+        :set_version_number => false
       )
       @namespace = namespace
       yield @configuration if block_given?
@@ -51,6 +52,8 @@ module BetaBuilder
         end
 
         args << " -arch \"#{arch}\"" unless arch.nil?
+
+        args << " VERSION_LONG='#{build_number_git}'" if set_version_number
 
         args
       end
@@ -88,7 +91,11 @@ module BetaBuilder
         output = BuildOutputParser.new(File.read("build.output"))
         output.build_output_dir  
       end
-      
+
+      def build_number_git
+        `git describe --tags --abbrev=1`.chop
+      end
+
       def dsym_file_name
         "#{app_file_name}.dSYM"
       end
